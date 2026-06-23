@@ -18,9 +18,44 @@ import {
 import { useState } from "react";
 export default function Employees() {
   const [EmpData, setEmpDate] = useState({});
+  let [error, setError] = useState({});
+
   let HandleChange = (e) => {
     let { name, value } = e.target;
     setEmpDate({ ...EmpData, [name]: value });
+  };
+
+  let FormError = {};
+
+  let HandleValidate = (EmpData) => {
+    if (!EmpData.EmpId) {
+      FormError.EmpId = "ID is required";
+    } else if (!EmpData.EmpName) {
+      FormError.EmpName = "Name is required";
+    } else if (!EmpData.Gender) {
+      FormError.Gender = "Gender is required";
+    } else if (!EmpData.DOB) {
+      FormError.DOB = "Date of Birth is required";
+    } else if (!EmpData.Email) {
+      FormError.Email = "Email is required";
+    } else if (!EmpData.ContactNumber) {
+      FormError.ContactNumber = "Contact Number is required";
+    } else if (!EmpData.EmpDepartment) {
+      FormError.EmpDepartment = "Department is required";
+    } else if (!EmpData.Salary) {
+      FormError.Salary = "Salary is required";
+    } else if (!EmpData.JoiningDate) {
+      FormError.JoiningDate = "Joining Date is required";
+    } else if (!EmpData.Designation) {
+      FormError.Designation = "Designation is required";
+    } else {
+      console.log("API data", EmpData);
+      navigate("/Panel");
+    }
+    setError(FormError);
+  };
+  let handleClick = (e) => {
+    HandleValidate(EmpData);
   };
   console.log(EmpData);
   return (
