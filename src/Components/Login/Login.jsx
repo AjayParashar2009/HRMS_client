@@ -74,7 +74,7 @@ export default function Login() {
                 </div>
 
                 <div className="other-links">
-                  <Link to="/signup" className="text-blue-500 hover:underline">
+                  <Link to="/signup" className="text-red-500 hover:underline">
                     Do not have any account 🥺
                   </Link>
                 </div>
