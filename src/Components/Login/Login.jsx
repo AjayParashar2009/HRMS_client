@@ -72,7 +72,6 @@ export default function Login() {
                     Submit
                   </button>
                 </div>
-
                 <div className="other-links">
                   <Link to="/signup" className="text-red-500 hover:underline">
                     Do not have any account 🥺
