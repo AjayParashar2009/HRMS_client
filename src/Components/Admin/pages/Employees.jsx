@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
 import {
   Card,
   CardAction,
@@ -17,47 +18,60 @@ import {
 } from "@/components/ui/card";
 import { useState } from "react";
 export default function Employees() {
-  const [EmpData, setEmpDate] = useState({});
+  let [EmpData, setEmpDate] = useState({});
   let [error, setError] = useState({});
+  let [openModal, setOpenModal] = useState(false);
+  let [openEditModal, setOpenEditModal] = useState(false);
+  let [empFormData, setEmpFormData] = useState({});
 
-  let HandleChange = (e) => {
+  let handleChange = (e) => {
     let { name, value } = e.target;
     setEmpDate({ ...EmpData, [name]: value });
   };
 
   let FormError = {};
 
-  let HandleValidate = (EmpData) => {
-    if (!EmpData.EmpId) {
+  let HandleValidate = (empFormData) => {
+    if (!empFormData.EmpId) {
       FormError.EmpId = "ID is required";
-    } else if (!EmpData.EmpName) {
+    } else if (!empFormData.EmpName) {
       FormError.EmpName = "Name is required";
-    } else if (!EmpData.Gender) {
+    } else if (!empFormData.Gender) {
       FormError.Gender = "Gender is required";
-    } else if (!EmpData.DOB) {
+    } else if (!empFormData.DOB) {
       FormError.DOB = "Date of Birth is required";
-    } else if (!EmpData.Email) {
+    } else if (!empFormData.Email) {
       FormError.Email = "Email is required";
-    } else if (!EmpData.ContactNumber) {
+    } else if (!empFormData.ContactNumber) {
       FormError.ContactNumber = "Contact Number is required";
-    } else if (!EmpData.EmpDepartment) {
+    } else if (!empFormData.EmpDepartment) {
       FormError.EmpDepartment = "Department is required";
-    } else if (!EmpData.Salary) {
+    } else if (!empFormData.Salary) {
       FormError.Salary = "Salary is required";
-    } else if (!EmpData.JoiningDate) {
+    } else if (!empFormData.JoiningDate) {
       FormError.JoiningDate = "Joining Date is required";
-    } else if (!EmpData.Designation) {
+    } else if (!empFormData.Designation) {
       FormError.Designation = "Designation is required";
     } else {
-      console.log("API data", EmpData);
-      navigate("/Panel");
+      console.log("API data", empFormData);
     }
     setError(FormError);
   };
-  let handleClick = (e) => {
-    HandleValidate(EmpData);
-  };
+
   console.log(EmpData);
+
+  let handleSubmit = (e) => {
+    let { name, value } = e.target;
+    setEmpDate({ ...EmpData, [name]: value });
+  };
+  let handleClick = (e) => {
+    setEmpFormData(EmpData);
+    setOpenModal(false);
+  };
+  let handleEditSubmit = (e) => {
+    setEmpFormData(EmpData);
+    setOpenEditModal(false);
+  };
   return (
     <>
       <Card>
@@ -65,10 +79,12 @@ export default function Employees() {
           <CardTitle>Card Title</CardTitle>
           <CardDescription>Card Description</CardDescription>
           <CardAction>
-            <Dialog>
+            <Dialog open={openModal} onOpenChange={setOpenModal}>
               <DialogTrigger className="border-2 border-blue-500 rounded-2xl p-2 bg-blue-500">
                 Add Employee
               </DialogTrigger>
+            </Dialog>
+            <Dialog open={openModal}>
               <DialogContent className="max-h-150 overflow-y-auto scroll-smooth">
                 <DialogHeader>
                   <DialogTitle className="text-center">
@@ -87,7 +103,7 @@ export default function Employees() {
                       placeholder="Enter the employee id"
                       className="w-full h-8 rounded"
                       name="EmpId"
-                      onChange={HandleChange}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mt-5">
@@ -101,7 +117,7 @@ export default function Employees() {
                       placeholder="Enter the employee Name"
                       className="w-full h-8 rounded"
                       name="EmpName"
-                      onChange={HandleChange}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mt-5">
@@ -113,10 +129,11 @@ export default function Employees() {
                     <select
                       className="w-full"
                       name="Gender"
-                      onChange={HandleChange}
+                      value={empFormData.Gender}
+                      onChange={handleChange}
                     >
-                      <option value="Select" disabled="true" selected>
-                        select
+                      <option value="Select" disabled>
+                        Select
                       </option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
@@ -134,7 +151,7 @@ export default function Employees() {
                       placeholder="Enter your DOB"
                       className="w-full h-8 rounded"
                       name="DOB"
-                      onChange={HandleChange}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mt-5">
@@ -148,7 +165,7 @@ export default function Employees() {
                       placeholder="Enter the employee Email"
                       className="w-full h-8 rounded"
                       name="Email"
-                      onChange={HandleChange}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mt-5">
@@ -162,7 +179,7 @@ export default function Employees() {
                       placeholder="Contact number"
                       className="w-full h-8 rounded"
                       name="ContactNumber"
-                      onChange={HandleChange}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mt-5">
@@ -176,7 +193,7 @@ export default function Employees() {
                       placeholder="Department"
                       className="w-full h-8 rounded"
                       name="EmpDepartment"
-                      onChange={HandleChange}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mt-5">
@@ -190,7 +207,7 @@ export default function Employees() {
                       placeholder="Salary"
                       className="w-full h-8 rounded"
                       name="Salary"
-                      onChange={HandleChange}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mt-5">
@@ -204,7 +221,7 @@ export default function Employees() {
                       placeholder="Joining Date"
                       className="w-full h-8 rounded"
                       name="JoiningDate"
-                      onChange={HandleChange}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mt-5">
@@ -218,19 +235,23 @@ export default function Employees() {
                       placeholder="Designation"
                       className="w-full h-8 rounded"
                       name="Designation"
-                      onChange={HandleChange}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mt-5">
                     <button
                       type="reset"
                       className="bg-blue-500 rounded-md w-20 border-2 text-white"
+                      onClick={() => {
+                        setOpenModal(false);
+                      }}
                     >
-                      Reset
+                      Close
                     </button>
                     <button
                       type="submit"
                       className="bg-blue-500 m-3 rounded-md w-20 border-2 text-white"
+                      onClick={handleClick}
                     >
                       Submit
                     </button>
@@ -241,40 +262,63 @@ export default function Employees() {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <table class="border-collapse border border-gray-400 ...">
+          {/* Table jsx */}
+          <table className="border-collapse border border-gray-400 ...">
             <thead>
               <tr>
-                <th class="border border-gray-300 ...">Emp Id</th>
-                <th class="border border-gray-300 ...">Emp Name</th>
-                <th class="border border-gray-300 ...">Gender</th>
-                <th class="border border-gray-300 ...">DOB</th>
-                <th class="border border-gray-300 ...">Email</th>
-                <th class="border border-gray-300 ...">Contact Number</th>
-                <th class="border border-gray-300 ...">Emp Department</th>
-                <th class="border border-gray-300 ...">Salary</th>
-                <th class="border border-gray-300 ...">Joining Date</th>
-                <th class="border border-gray-300 ...">Designation</th>
+                <th className="border border-gray-300 ...">Emp Id</th>
+                <th className="border border-gray-300 ...">Emp Name</th>
+                <th className="border border-gray-300 ...">Gender</th>
+                <th className="border border-gray-300 ...">DOB</th>
+                <th className="border border-gray-300 ...">Email</th>
+                <th className="border border-gray-300 ...">Contact Number</th>
+                <th className="border border-gray-300 ...">Emp Department</th>
+                <th className="border border-gray-300 ...">Salary</th>
+                <th className="border border-gray-300 ...">Joining Date</th>
+                <th className="border border-gray-300 ...">Designation</th>
+                <th className="border border-gray-300 ...">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="border border-gray-300 ...">{EmpData.EmpId}</td>
-                <td class="border border-gray-300 ...">{EmpData.EmpName}</td>
-                <td class="border border-gray-300 ...">{EmpData.Gender}</td>
-                <td class="border border-gray-300 ...">{EmpData.DOB}</td>
-                <td class="border border-gray-300 ...">{EmpData.Email}</td>
-                <td class="border border-gray-300 ...">
-                  {EmpData.ContactNumber}
+                <td className="border border-gray-300 ...">
+                  {empFormData.EmpId}
                 </td>
-                <td class="border border-gray-300 ...">
-                  {EmpData.EmpDepartment}
+                <td className="border border-gray-300 ...">
+                  {empFormData.EmpName}
                 </td>
-                <td class="border border-gray-300 ...">{EmpData.Salary}</td>
-                <td class="border border-gray-300 ...">
-                  {EmpData.JoiningDate}
+                <td className="border border-gray-300 ...">
+                  {empFormData.Gender}
                 </td>
-                <td class="border border-gray-300 ...">
-                  {EmpData.Designation}
+                <td className="border border-gray-300 ...">
+                  {empFormData.DOB}
+                </td>
+                <td className="border border-gray-300 ...">
+                  {empFormData.Email}
+                </td>
+                <td className="border border-gray-300 ...">
+                  {empFormData.ContactNumber}
+                </td>
+                <td className="border border-gray-300 ...">
+                  {empFormData.EmpDepartment}
+                </td>
+                <td className="border border-gray-300 ...">
+                  {empFormData.Salary}
+                </td>
+                <td className="border border-gray-300 ...">
+                  {empFormData.JoiningDate}
+                </td>
+                <td className="border border-gray-300 ...">
+                  {empFormData.Designation}
+                </td>
+                <td className="border border-gray-300 ...">
+                  <Dialog open={openEditModal} onOpenChange={setOpenEditModal}>
+                    <DialogTrigger className="border-2 border-blue-500 rounded-2xl p-2 bg-blue-500">
+                      Edit
+                    </DialogTrigger>
+                  </Dialog>
+
+                  <button>Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -284,6 +328,189 @@ export default function Employees() {
           <p>Card Footer</p>
         </CardFooter>
       </Card>
+      {/* edit employee record modal */}
+      <Dialog open={openEditModal}>
+        <DialogContent className="max-h-150 overflow-y-auto scroll-smooth">
+          <DialogHeader>
+            <DialogTitle className="text-center">Employee Form</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            <div>
+              <label htmlFor="" className="font-bold text-black">
+                Emp Id
+              </label>
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Enter the employee id"
+                className="w-full h-8 rounded"
+                name="EmpId"
+                onChange={handleChange}
+                defaultValue={empFormData.EmpId}
+              />
+            </div>
+            <div className="mt-5">
+              <label htmlFor="" className="font-bold text-black">
+                Emp Name
+              </label>
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Enter the employee Name"
+                className="w-full h-8 rounded"
+                name="EmpName"
+                onChange={handleChange}
+                defaultValue={empFormData.EmpName}
+              />
+            </div>
+            <div className="mt-5">
+              <label htmlFor="" className="font-bold text-black">
+                Gender
+              </label>
+            </div>
+            <div>
+              <select
+                className="w-full"
+                name="Gender"
+                onChange={handleChange}
+                defaultValue={empFormData.Gender}
+              >
+                <option value="Select" disabled>
+                  select
+                </option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div className="mt-5">
+              <label htmlFor="" className="font-bold text-black">
+                Date of birth
+              </label>
+            </div>
+            <div>
+              <input
+                type="date"
+                placeholder="Enter your DOB"
+                className="w-full h-8 rounded"
+                name="DOB"
+                onChange={handleChange}
+                defaultValue={empFormData.DOB}
+              />
+            </div>
+            <div className="mt-5">
+              <label htmlFor="" className="font-bold text-black">
+                Email
+              </label>
+            </div>
+            <div>
+              <input
+                type="email"
+                placeholder="Enter the employee Email"
+                className="w-full h-8 rounded"
+                name="Email"
+                onChange={handleChange}
+                defaultValue={empFormData.Email}
+              />
+            </div>
+            <div className="mt-5">
+              <label htmlFor="" className="font-bold text-black">
+                Contact number
+              </label>
+            </div>
+            <div>
+              <input
+                type="number"
+                placeholder="Contact number"
+                className="w-full h-8 rounded"
+                name="ContactNumber"
+                onChange={handleChange}
+                defaultValue={empFormData.ContactNumber}
+              />
+            </div>
+            <div className="mt-5">
+              <label htmlFor="" className="font-bold text-black">
+                Emp Department
+              </label>
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Department"
+                className="w-full h-8 rounded"
+                name="EmpDepartment"
+                onChange={handleChange}
+                defaultValue={empFormData.EmpDepartment}
+              />
+            </div>
+            <div className="mt-5">
+              <label htmlFor="" className="font-bold text-black">
+                Salary
+              </label>
+            </div>
+            <div>
+              <input
+                type="number"
+                placeholder="Salary"
+                className="w-full h-8 rounded"
+                name="Salary"
+                onChange={handleChange}
+                defaultValue={empFormData.Salary}
+              />
+            </div>
+            <div className="mt-5">
+              <label htmlFor="" className="font-bold text-black">
+                Joining Date
+              </label>
+            </div>
+            <div>
+              <input
+                type="date"
+                placeholder="Joining Date"
+                className="w-full h-8 rounded"
+                name="JoiningDate"
+                onChange={handleChange}
+                defaultValue={empFormData.JoiningDate}
+              />
+            </div>
+            <div className="mt-5">
+              <label htmlFor="" className="font-bold text-black">
+                Designation
+              </label>
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Designation"
+                className="w-full h-8 rounded"
+                name="Designation"
+                onChange={handleChange}
+                defaultValue={empFormData.Designation}
+              />
+            </div>
+            <div className="mt-5">
+              <button
+                type="reset"
+                className="bg-blue-500 rounded-md w-20 border-2 text-white"
+                onClick={() => {
+                  setOpenEditModal(false);
+                }}
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-500 m-3 rounded-md w-20 border-2 text-white"
+                onClick={handleEditSubmit}
+              >
+                Submit
+              </button>
+            </div>
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
